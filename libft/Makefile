@@ -8,7 +8,7 @@ CC ?= cc
 AR ?= ar
 
 CFLAGS ?=
-CFLAGS := $(CFLAGS) -g -Wall -Wextra -Werror -Iinc  -O2 -flto -march=native
+CFLAGS := $(CFLAGS) -g -Wall -Wextra -Werror -Iinc
 
 INCLUDES :=	inc/ft_ctype.h \
 			inc/ft_list.h \
@@ -21,6 +21,7 @@ INCLUDES :=	inc/ft_ctype.h \
 			inc/ft_string.h
 
 OBJS := src/base/ft_atoi.o \
+		src/base/ft_safe_atoi.o \
 		src/base/ft_bzero.o \
 		src/base/ft_calloc.o \
 		src/base/ft_isalnum.o \

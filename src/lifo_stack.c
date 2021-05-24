@@ -23,12 +23,12 @@ void	lifo_dtor(t_lifo_stack *this)
 	this->elem_count = 0;
 }
 
-int64_t	lifo_at(t_lifo_stack *this, size_t index)
+int	lifo_at(t_lifo_stack *this, size_t index)
 {
 	return (this->data[index]);
 }
 
-void	lifo_pushval(t_lifo_stack *this, int64_t value)
+void	lifo_pushval(t_lifo_stack *this, int value)
 {
 	if (this->elem_count >= this->stack_size)
 		return ;

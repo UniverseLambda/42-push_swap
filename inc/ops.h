@@ -1,28 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stdlib.h                                        :+:      :+:    :+:   */
+/*   ops.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clsaad <clsaad@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/08 11:36:04 by clsaad            #+#    #+#             */
-/*   Updated: 2020/12/08 11:36:05 by clsaad           ###   ########lyon.fr   */
+/*   Created: 2021/05/19 11:05:35 by clsaad            #+#    #+#             */
+/*   Updated: 2021/05/19 11:05:36 by clsaad           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_STDLIB_H
-# define FT_STDLIB_H
+#ifndef OPS_H
+# define OPS_H
 
-# include <stddef.h>
+enum e_ops
+{
+	NOOP,
+	SWAP_A,
+	SWAP_B,
+	SWAP_AB,
+	PUSH_A,
+	PUSH_B,
+	ROT_A,
+	ROT_B,
+	ROT_AB,
+	REV_ROT_A,
+	REV_ROT_B,
+	REV_ROT_AB,
+};
 
-typedef void *(*	t_calloc)(size_t, size_t);
-typedef void *(*	t_malloc)(size_t);
-typedef void (*		t_free)(void *);
+void	optimize_ops(void);
 
-int			ft_atoi(const char *nptr);
-char		*ft_itoa(int n);
-void		*ft_calloc(size_t nmemb, size_t size);
+int		swap_a(void);
+int		swap_b(void);
+int		swap_ab(void);
+int		push_a(void);
+int		push_b(void);
+int		rot_a(void);
+int		rot_b(void);
+int		rot_ab(void);
+int		rrot_a(void);
+int		rrot_b(void);
+int		rrot_ab(void);
 
-int			ft_safe_atoi(int *ret, const char *nptr);
-
-#endif // FT_STDLIB_H
+#endif // OPS_H

@@ -2,7 +2,7 @@
 
 void	lifo_swap(t_lifo_stack *this)
 {
-	int64_t	tmp;
+	int	tmp;
 
 	if (this->elem_count < 2)
 		return ;
@@ -21,7 +21,7 @@ void	lifo_push(t_lifo_stack *this, t_lifo_stack *src)
 
 void	lifo_rotate(t_lifo_stack *this)
 {
-	int64_t	tmp[2];
+	int		tmp[2];
 	size_t	i;
 
 	if (this->elem_count < 2)
@@ -39,7 +39,7 @@ void	lifo_rotate(t_lifo_stack *this)
 
 void	lifo_reverse_rotate(t_lifo_stack *this)
 {
-	int64_t	tmp[2];
+	int		tmp[2];
 	size_t	i;
 
 	if (this->elem_count < 2)

@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stdlib.h                                        :+:      :+:    :+:   */
+/*   median.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clsaad <clsaad@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/08 11:36:04 by clsaad            #+#    #+#             */
-/*   Updated: 2020/12/08 11:36:05 by clsaad           ###   ########lyon.fr   */
+/*   Created: 2021/05/24 14:45:34 by clsaad            #+#    #+#             */
+/*   Updated: 2021/05/24 14:45:35 by clsaad           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_STDLIB_H
-# define FT_STDLIB_H
+#ifndef MEDIAN_H
+# define MEDIAN_H
 
 # include <stddef.h>
 
-typedef void *(*	t_calloc)(size_t, size_t);
-typedef void *(*	t_malloc)(size_t);
-typedef void (*		t_free)(void *);
+int	median(int *values, size_t count, int *ret);
 
-int			ft_atoi(const char *nptr);
-char		*ft_itoa(int n);
-void		*ft_calloc(size_t nmemb, size_t size);
-
-int			ft_safe_atoi(int *ret, const char *nptr);
-
-#endif // FT_STDLIB_H
+#endif // MEDIAN_H
