@@ -27,6 +27,7 @@ int		lifo_ctor(t_lifo_stack *this, size_t size);
 void	lifo_dtor(t_lifo_stack *this);
 int		lifo_at(t_lifo_stack *this, size_t index);
 void	lifo_pushval(t_lifo_stack *this, int value);
+int		lifo_head(t_lifo_stack *this);
 
 void	lifo_swap(t_lifo_stack *this);
 void	lifo_push(t_lifo_stack *this, t_lifo_stack *src);

@@ -5,12 +5,21 @@
 #include <ft_norm.h>
 #include <stdlib.h>
 
-static void sort(int *sorted, size_t count)
+#include <stdio.h>
+static void swap_val(int *a, int *b)
+{
+	int	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+static void median_sort(int *sorted, size_t count)
 {
 	size_t	i;
 	size_t	j;
 	int		index;
-	int		tmp;
 
 	i = 0;
 	while (i < count)
@@ -23,9 +32,7 @@ static void sort(int *sorted, size_t count)
 				index = j;
 			++j;
 		}
-		tmp = sorted[i];
-		sorted[i] = sorted[index];
-		sorted[index] = tmp;
+		swap_val(sorted + i, sorted + index);
 		++i;
 	}
 }
@@ -35,7 +42,18 @@ static int	median_sorted(int *values, size_t count)
 	int		sorted[5];
 	
 	ft_memcpy(sorted, values, count * sizeof(*values));
-	sort(sorted, count);
+	median_sort(sorted, count);
+	puts("-- SORTED --");
+	for (size_t i = 0; i < count; ++i)
+	{
+		printf("(%zu): %d\n", i, sorted[i]);
+	}
+	if ((count % 2) == 0)
+	{
+		printf("local_median: %d\n", sorted[count / 2 - 1]);
+		return (sorted[count / 2 - 1]);
+	}
+	printf("local_median: %d\n", sorted[count / 2]);
 	return (sorted[count / 2]);
 }
 
@@ -44,7 +62,9 @@ static int	find_pivot(int *values, size_t count, int *ret)
 	size_t	i;
 	size_t	max_group;
 	int		*medians;
+	int		result;
 
+	puts("====== FIND PIVOT ======");
 	i = 0;
 	max_group = (count / 5) + !!(count % 5);
 	if (max_group == 1)
@@ -56,17 +76,23 @@ static int	find_pivot(int *values, size_t count, int *ret)
 		return (0);
 	while (i < max_group)
 	{
-		if (i < max_group - 1)
+		if (i < max_group - 1 || (count % 5) == 0)
 			medians[i] = median_sorted(values + (i * 5), 5);
 		else
 			medians[i] = median_sorted(values + (i * 5), count % 5);
 		++i;
 	}
+	result = find_pivot(medians, max_group, ret);
 	free(medians);
-	return (find_pivot(medians, max_group, ret));
+	return (result);
 }
 
 int	median(int *values, size_t count, int *ret)
 {
-	return (find_pivot(values, count, ret));
+	int	pivot;
+
+	if (!find_pivot(values, count, &pivot))
+		return (0);
+	printf("PIVOT: %d\n", pivot);
+	return (median_from_pivot(values, count, pivot, ret));
 }

@@ -34,3 +34,8 @@ void	lifo_pushval(t_lifo_stack *this, int value)
 		return ;
 	this->data[this->elem_count++] = value;
 }
+
+int	lifo_head(t_lifo_stack *this)
+{
+	return (this->data[this->elem_count - 1]);
+}

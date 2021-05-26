@@ -16,5 +16,6 @@
 # include <stddef.h>
 
 int	median(int *values, size_t count, int *ret);
+int	median_from_pivot(int *values, size_t count, int pivot, int *ret);
 
 #endif // MEDIAN_H

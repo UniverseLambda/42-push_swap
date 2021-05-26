@@ -20,6 +20,10 @@ OBJS := src/main.o \
 		src/ps_runtime.o \
 		src/sort.o \
 		src/median.o \
+		src/median_finder.o \
+		src/ops_push_swap.o \
+		src/ops_rotate.o \
+		src/ops_rrotate.o \
 
 all: all-dependency $(NAME)
 
@@ -41,7 +45,7 @@ debug:	BUILD_TYPE := debug
 debug:	all
 
 run:	all
-	./$(NAME) 1 2 3 4 5
+	./$(NAME) -52 1 33 2 5 3 9 4 123
 
 # DEPENDENCIES TARGET
 
