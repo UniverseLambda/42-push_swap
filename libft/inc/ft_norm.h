@@ -25,6 +25,7 @@ double				ft_tern_d(int cond, double a, double b);
 
 // Min
 
+int					ft_min_i(int a, int b);
 size_t				ft_min_zu(size_t a, size_t b);
 double				ft_min_d(double a, double b);
 unsigned long long	ft_min_ull(unsigned long long a, unsigned long long b);

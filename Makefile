@@ -9,18 +9,20 @@ RM ?= rm
 LD := $(CC)
 
 CFLAGS ?=
-CFLAGS := $(CFLAGS) -Wall -Wextra -Werror -Iinc -Ilibft/inc -g3
+CFLAGS := $(CFLAGS) -Wall -Wextra -Werror -Iinc -Ilibft/inc -g3 -fsanitize=address
 LDFLAGS := $(LDFLAGS) -g3
 
 BUILD_TYPE := release
 
 OBJS := src/main.o \
+		src/new_median.o \
+		src/new_median_ext.o \
+		src/array.o \
+		src/array_ext.o \
 		src/lifo_stack.o \
 		src/lifo_stack_op.o \
 		src/ps_runtime.o \
 		src/sort.o \
-		src/median.o \
-		src/median_finder.o \
 		src/ops_push_swap.o \
 		src/ops_rotate.o \
 		src/ops_rrotate.o \
@@ -28,7 +30,7 @@ OBJS := src/main.o \
 all: all-dependency $(NAME)
 
 $(NAME): dependency $(OBJS)
-	$(LD) $(LDFLAGS) -o $(NAME) $(OBJS) libft/libft.a
+	$(LD) $(LDFLAGS) -o $(NAME) $(OBJS) libft/libft.a -lasan
 
 %.o: %.c libft.h
 	$(CC) $(CFLAGS) -o $@ -c $<

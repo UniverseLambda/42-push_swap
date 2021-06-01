@@ -36,7 +36,7 @@ void	sort()
 	int			m;
 
 	rt = rt_ptr();
-	median(rt->stack_a.data, rt->stack_a.elem_count, &m);
+	median(rt->stack_a.data, rt->stack_a.elem_count, rt->stack_a.elem_count / 2, &m);
 	printf("Median: %d\n", m);
 	spread(rt, m);
 }

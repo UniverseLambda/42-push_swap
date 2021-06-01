@@ -12,6 +12,13 @@
 
 #include <ft_norm.h>
 
+int	ft_min_i(int a, int b)
+{
+	if (a < b)
+		return (a);
+	return (b);
+}
+
 size_t	ft_min_zu(size_t a, size_t b)
 {
 	if (a < b)
