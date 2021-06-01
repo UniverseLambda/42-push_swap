@@ -6,10 +6,12 @@
 static void	spread(t_runtime *rt, int pivot)
 {
 	size_t		i;
+	size_t		max_move;
 	int			val;
 
 	i = 0;
-	while (i < rt->stack_a.elem_count)
+	max_move = rt->stack_a.elem_count;
+	while (i < max_move)
 	{
 		val = lifo_head(&(rt->stack_a));
 		if (val < pivot)
