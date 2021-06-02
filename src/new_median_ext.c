@@ -1,7 +1,7 @@
 #include <median.h>
 #include <array.h>
 
-size_t	med_low_length(t_arrayref array, int pivot)
+size_t	med_low_length(t_aref array, int pivot)
 {
 	size_t	n;
 	size_t	i;
@@ -13,7 +13,7 @@ size_t	med_low_length(t_arrayref array, int pivot)
 	return (n);
 }
 
-size_t	med_high_length(t_arrayref array, int pivot)
+size_t	med_high_length(t_aref array, int pivot)
 {
 	size_t	n;
 	size_t	i;
@@ -25,7 +25,7 @@ size_t	med_high_length(t_arrayref array, int pivot)
 	return (n);
 }
 
-void	med_fill_low_high(t_arrayref array, t_arrayref low, t_arrayref high, int pivot)
+void	med_fill_low_high(t_aref array, t_aref low, t_aref high, int pivot)
 {
 	size_t	i;
 	size_t	li;

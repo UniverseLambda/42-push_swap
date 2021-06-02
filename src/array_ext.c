@@ -1,8 +1,8 @@
 #include <array.h>
 
-t_arrayref	awrap(int *ptr, size_t len)
+t_aref	awrap(int *ptr, size_t len)
 {
-	t_arrayref	ref;
+	t_aref	ref;
 
 	ref.ptr = ptr;
 	ref.length = len;
@@ -10,7 +10,7 @@ t_arrayref	awrap(int *ptr, size_t len)
 	return (ref);
 }
 
-size_t	alen(t_arrayref ref)
+size_t	alen(t_aref ref)
 {
 	return (ref.length);
 }

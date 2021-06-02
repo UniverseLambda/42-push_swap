@@ -10,7 +10,7 @@ LD := $(CC)
 
 CFLAGS ?=
 CFLAGS := $(CFLAGS) -Wall -Wextra -Werror -Iinc -Ilibft/inc -g3 -fsanitize=address
-LDFLAGS := $(LDFLAGS) -g3
+LDFLAGS := $(LDFLAGS) -g3 -fsanitize=address
 
 BUILD_TYPE := release
 
@@ -30,7 +30,7 @@ OBJS := src/main.o \
 all: all-dependency $(NAME)
 
 $(NAME): dependency $(OBJS)
-	$(LD) $(LDFLAGS) -o $(NAME) $(OBJS) libft/libft.a -lasan
+	$(LD) $(LDFLAGS) -o $(NAME) $(OBJS) libft/libft.a
 
 %.o: %.c libft.h
 	$(CC) $(CFLAGS) -o $@ -c $<

@@ -3,20 +3,20 @@
 
 # include <stddef.h>
 
-typedef struct s_arrayref
+typedef struct s_aref
 {
 	int			*ptr;
 	size_t		length;
 	int			nofree;
-}				t_arrayref;
+}				t_aref;
 
-t_arrayref		anew(size_t size);
-void			afree(t_arrayref ref);
-int				aget(t_arrayref ref, size_t index);
-int				aput(t_arrayref ref, size_t index, int val);
-int				avalid(t_arrayref ref);
-size_t			alen(t_arrayref ref);
+t_aref			anew(size_t size);
+void			afree(t_aref ref);
+int				aget(t_aref ref, size_t index);
+int				aput(t_aref ref, size_t index, int val);
+int				avalid(t_aref ref);
+size_t			alen(t_aref ref);
 
-t_arrayref		awrap(int *ptr, size_t len);
+t_aref			awrap(int *ptr, size_t len);
 
 #endif // ARRAY_H

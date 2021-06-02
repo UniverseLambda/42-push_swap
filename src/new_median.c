@@ -4,7 +4,7 @@
 #include <ft_norm.h>
 #include <ft_string.h>
 
-static void	sort(t_arrayref array)
+static void	sort(t_aref array)
 {
 	int		tmp;
 	size_t	i;
@@ -29,7 +29,7 @@ static void	sort(t_arrayref array)
 	}
 }
 
-static void	fill_medians(t_arrayref medians, int *values, size_t count)
+static void	fill_medians(t_aref medians, int *values, size_t count)
 {
 	size_t	i;
 	size_t	len;
@@ -45,7 +45,7 @@ static void	fill_medians(t_arrayref medians, int *values, size_t count)
 	}
 }
 
-static int	get_pivot(t_arrayref medians, int *pivot)
+static int	get_pivot(t_aref medians, int *pivot)
 {
 	if (medians.length <= 5)
 	{
@@ -61,10 +61,10 @@ static int	get_pivot(t_arrayref medians, int *pivot)
 	return (0);
 }
 
-static int	retrieve_the_median(t_arrayref array, int idx, int pivot, int *retv)
+static int	retrieve_the_median(t_aref array, int idx, int pivot, int *retv)
 {
-	t_arrayref	low;
-	t_arrayref	high;
+	t_aref		low;
+	t_aref		high;
 	int			k;
 	int			ret;
 
@@ -92,7 +92,7 @@ static int	retrieve_the_median(t_arrayref array, int idx, int pivot, int *retv)
 
 int	median(int *values, size_t count, int idx, int *retv)
 {
-	t_arrayref	medians;
+	t_aref		medians;
 	int			pivot;
 	int			ret;
 

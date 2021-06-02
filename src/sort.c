@@ -32,7 +32,7 @@ static void	spread(t_runtime *rt, int pivot)
 	}
 }
 
-void	sort()
+void	sort(void)
 {
 	t_runtime	*rt;
 	int			m;
