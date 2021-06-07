@@ -31,17 +31,17 @@ int	aget(t_aref ref, size_t index)
 	return (ref.ptr[index]);
 }
 
-int	aput(t_aref ref, size_t index, int val)
+t_bool	aput(t_aref ref, size_t index, int val)
 {
 	if (!avalid(ref))
-		return (0);
+		return (FALSE);
 	if (index >= ref.length)
-		return (0);
+		return (FALSE);
 	ref.ptr[index] = val;
-	return (1);
+	return (TRUE);
 }
 
-int	avalid(t_aref ref)
+t_bool	avalid(t_aref ref)
 {
 	return (ref.ptr != NULL);
 }

@@ -3,20 +3,25 @@
 
 # include <stddef.h>
 
+# include <ft_stdbool.h>
+
 typedef struct s_aref
 {
 	int			*ptr;
 	size_t		length;
-	int			nofree;
+	t_bool		nofree;
 }				t_aref;
 
 t_aref			anew(size_t size);
 void			afree(t_aref ref);
 int				aget(t_aref ref, size_t index);
-int				aput(t_aref ref, size_t index, int val);
-int				avalid(t_aref ref);
+t_bool			aput(t_aref ref, size_t index, int val);
+t_bool			avalid(t_aref ref);
 size_t			alen(t_aref ref);
 
 t_aref			awrap(int *ptr, size_t len);
+t_aref			asharedsub(t_aref ref, size_t start, size_t end);
+t_aref			asub(t_aref ref, size_t start, size_t end);
+t_aref			ainvalid();
 
 #endif // ARRAY_H

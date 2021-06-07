@@ -26,6 +26,8 @@ OBJS := src/main.o \
 		src/ops_push_swap.o \
 		src/ops_rotate.o \
 		src/ops_rrotate.o \
+		src/ops_target.o \
+		src/quick_sort.o \
 
 all: all-dependency $(NAME)
 

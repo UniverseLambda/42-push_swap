@@ -2,6 +2,8 @@
 #include <ps_runtime.h>
 #include <median.h>
 
+#include <ft_stdbool.h>
+
 #include <stdio.h>
 static void	spread(t_runtime *rt, int pivot)
 {
@@ -32,6 +34,36 @@ static void	spread(t_runtime *rt, int pivot)
 	}
 }
 
+static t_bool	is_sorted(t_lifo_stack *stack)
+{
+	size_t	i;
+
+	i = 1;
+	while (i < stack->elem_count)
+	{
+		if (stack->data[i - 1] > stack->data[i])
+			return (FALSE);
+		++i;
+	}
+	return (TRUE);
+}
+
+static void	sort_m(t_runtime *rt)
+{
+	t_lifo_stack	*a;
+	t_lifo_stack	*b;
+	t_bool			asorted;
+	t_bool			bsorted;
+
+	a = &(rt->stack_a);
+	b = &(rt->stack_b);
+	while (1)
+	{
+		asorted = is_sorted(a);
+		bsorted = is_sorted(b);
+	}
+}
+
 void	sort(void)
 {
 	t_runtime	*rt;
@@ -41,4 +73,5 @@ void	sort(void)
 	median(rt->stack_a.data, rt->stack_a.elem_count, rt->stack_a.elem_count / 2, &m);
 	printf("Median: %d\n", m);
 	spread(rt, m);
+	// sort_m(rt);
 }

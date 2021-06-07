@@ -43,4 +43,9 @@ int		rrot_a(void);
 int		rrot_b(void);
 int		rrot_ab(void);
 
+int		swap_x(t_lifo_stack *stack);
+int		push_x(t_lifo_stack *stack);
+int		rot_x(t_lifo_stack *stack);
+int		rrot_x(t_lifo_stack *stack);
+
 #endif // OPS_H

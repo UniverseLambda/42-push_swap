@@ -18,7 +18,8 @@ INCLUDES :=	inc/ft_ctype.h \
 			inc/ft_stdio.h \
 			inc/ft_stdlib.h \
 			inc/ft_strbuff.h \
-			inc/ft_string.h
+			inc/ft_string.h \
+			inc/ft_stdbool.h
 
 OBJS := src/base/ft_atoi.o \
 		src/base/ft_safe_atoi.o \
