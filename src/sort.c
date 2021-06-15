@@ -34,35 +34,35 @@ static void	spread(t_runtime *rt, int pivot)
 	}
 }
 
-static t_bool	is_sorted(t_lifo_stack *stack)
-{
-	size_t	i;
+// static t_bool	is_sorted(t_lifo_stack *stack)
+// {
+// 	size_t	i;
 
-	i = 1;
-	while (i < stack->elem_count)
-	{
-		if (stack->data[i - 1] > stack->data[i])
-			return (FALSE);
-		++i;
-	}
-	return (TRUE);
-}
+// 	i = 1;
+// 	while (i < stack->elem_count)
+// 	{
+// 		if (stack->data[i - 1] > stack->data[i])
+// 			return (FALSE);
+// 		++i;
+// 	}
+// 	return (TRUE);
+// }
 
-static void	sort_m(t_runtime *rt)
-{
-	t_lifo_stack	*a;
-	t_lifo_stack	*b;
-	t_bool			asorted;
-	t_bool			bsorted;
+// static void	sort_m(t_runtime *rt)
+// {
+// 	t_lifo_stack	*a;
+// 	t_lifo_stack	*b;
+// 	t_bool			asorted;
+// 	t_bool			bsorted;
 
-	a = &(rt->stack_a);
-	b = &(rt->stack_b);
-	while (1)
-	{
-		asorted = is_sorted(a);
-		bsorted = is_sorted(b);
-	}
-}
+// 	a = &(rt->stack_a);
+// 	b = &(rt->stack_b);
+// 	while (1)
+// 	{
+// 		asorted = is_sorted(a);
+// 		bsorted = is_sorted(b);
+// 	}
+// }
 
 void	sort(void)
 {

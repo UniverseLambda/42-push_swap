@@ -55,4 +55,5 @@ t_aref	ainvalid()
 	res.length = 0;
 	res.nofree = 1;
 	res.ptr = NULL;
+	return (res);
 }

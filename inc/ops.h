@@ -13,6 +13,8 @@
 #ifndef OPS_H
 # define OPS_H
 
+# include <lifo_stack.h>
+
 enum e_ops
 {
 	NOOP,

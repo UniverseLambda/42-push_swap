@@ -13,6 +13,10 @@
 #ifndef SORT_H
 # define SORT_H
 
+# include <ps_runtime.h>
+# include <ft_stdbool.h>
+
 void	sort(void);
+t_bool	quick_sort(t_runtime *rt);
 
 #endif // SORT_H

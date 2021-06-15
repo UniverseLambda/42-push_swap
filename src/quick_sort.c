@@ -1,8 +1,9 @@
-0#include <ps_runtime.h>
+#include <ps_runtime.h>
 
 #include <array.h>
 #include <median.h>
 #include <ops.h>
+#include <limits.h>
 
 static t_aref	abelow(t_runtime *rt, int pivot)
 {
@@ -28,6 +29,7 @@ static t_aref	abelow(t_runtime *rt, int pivot)
 		{
 			if (rt->stack_a.data[i] < pivot)
 				aput(below, aidx++, rt->stack_a.data[i]);
+			++i;
 		}
 	}
 	return (below);
@@ -35,7 +37,7 @@ static t_aref	abelow(t_runtime *rt, int pivot)
 
 static t_bool	pushvals(t_runtime *rt, int v0, int v1, int nmax)
 {
-	size_t	n;
+	int		n;
 	int		v;
 
 	n = 0;
@@ -48,6 +50,8 @@ static t_bool	pushvals(t_runtime *rt, int v0, int v1, int nmax)
 				return (FALSE);
 			++n;
 		}
+		else if (!rot_a())
+			return (FALSE);
 	}
 	return (TRUE);
 }
@@ -56,10 +60,12 @@ static t_bool	handle_atomic(t_runtime *rt, t_aref below)
 {
 	if (below.length <= 1)
 		return (pushvals(rt, below.ptr[0], below.ptr[0], 1));
-	if (rt->stack_b.data[0] < rt->stack_b.data[1])
+	if (!pushvals(rt, below.ptr[0], below.ptr[1], 2))
+		return (FALSE);
+	if (rt->stack_b.data[rt->stack_b.elem_count - 1] < rt->stack_b.data[rt->stack_b.elem_count - 2])
 		if (!swap_b())
 			return (FALSE);
-		pushvals(rt, below.ptr[0], below.ptr[1], 2);
+	return (TRUE);
 }
 
 static t_bool	_qs(t_runtime *rt, int pivot)
@@ -92,9 +98,21 @@ static t_bool	_qs(t_runtime *rt, int pivot)
 
 t_bool	quick_sort(t_runtime *rt)
 {
-	int	pivot;
-
-	if (!median(rt->stack_a.data, rt->stack_a.elem_count, rt->stack_a.elem_count, &pivot))
+	size_t	i;
+	int		max;
+	
+	i = 0;
+	max = INT_MIN;
+	while (i < rt->stack_a.elem_count)
+	{
+		if (max < rt->stack_a.data[i])
+			max = rt->stack_a.data[i];
+		++i;
+	}
+	if (!_qs(rt, max))
 		return (FALSE);
-	return (_qs(rt, pivot));
+	while (rt->stack_b.elem_count > 0)
+		if (!push_a())
+			return (FALSE);
+	return (TRUE);
 }
