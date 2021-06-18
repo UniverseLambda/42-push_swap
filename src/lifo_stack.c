@@ -25,7 +25,7 @@ void	lifo_dtor(t_lifo_stack *this)
 
 int	lifo_at(t_lifo_stack *this, size_t index)
 {
-	return (this->data[index]);
+	return (this->data[this->elem_count - index - 1]);
 }
 
 void	lifo_pushval(t_lifo_stack *this, int value)

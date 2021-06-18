@@ -2,6 +2,8 @@
 
 #include <ps_runtime.h>
 #include <sort.h>
+#include <array.h>
+#include <ft_string.h>
 
 #include <unistd.h>
 
@@ -24,12 +26,38 @@ static void	print_op(enum e_ops op)
 	else if (op == ROT_AB)
 		write(STDOUT_FILENO, "rr\n", 3);
 	else if (op == REV_ROT_A)
-		write(STDOUT_FILENO, "rra\n", 3);
+		write(STDOUT_FILENO, "rra\n", 4);
 	else if (op == REV_ROT_B)
-		write(STDOUT_FILENO, "rrb\n", 3);
+		write(STDOUT_FILENO, "rrb\n", 4);
 	else if (op == REV_ROT_AB)
-		write(STDOUT_FILENO, "rrr\n", 3);
+		write(STDOUT_FILENO, "rrr\n", 4);
 	
+}
+
+static t_bool	indexify()
+{
+	t_lifo_stack	*sa;
+	size_t			i;
+	size_t			j;
+	int				below;
+	t_aref			tmp;
+
+	sa = &(rt_ptr()->stack_a);
+	tmp = anew(sa->elem_count);
+	if (!avalid(tmp))
+		return (FALSE);
+	i = -1;
+	while (++i < sa->elem_count)
+	{
+		j = 0;
+		below = 0;
+		while (j < sa->elem_count)
+			below += sa->data[j++] < sa->data[i];
+		aput(tmp, i, below);
+	}
+	ft_memcpy(sa->data, tmp.ptr, alen(tmp) * sizeof(sa->data));
+	afree(tmp);
+	return (TRUE);
 }
 
 #include <stdio.h>
@@ -43,14 +71,24 @@ int	main(int argc, char *argv[])
 	if (ret != RTINIT_OK)
 	{
 		write(STDERR_FILENO, "Error\n", 6);
-		return (1);
+		rt_exit(1);
+	}
+	// printf("%p\n", rt_ptr()->stack_b.data);
+	if (!indexify())
+	{
+		write(STDERR_FILENO, "Error\n", 6);
+		rt_exit(2);
 	}
 	// for (int i = argc - 2; i >= 0; --i) {
 	// 	printf("[%d]: %d\n", argc - 2 - i, rt_ptr()->stack_a.data[i]);
 	// }
 	// sort();
-	if (!quick_sort(rt_ptr()))
-		rt_exit(2);
+	// if (!quick_sort(rt_ptr()))
+	// 	rt_exit(3);
+	// printf("%p\n", rt_ptr()->stack_b.data);
+	if (!chunk_sort(rt_ptr()))
+		rt_exit(3);
+	// printf("%p\n", rt_ptr()->stack_b.data);
 	for (size_t i = 0; i < rt_ptr()->ops.elemcount; ++i)
 		print_op(((enum e_ops *)(rt_ptr()->ops.data))[i]);
 	rt_exit(0);

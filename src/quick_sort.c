@@ -35,12 +35,33 @@ static t_aref	abelow(t_runtime *rt, int pivot)
 	return (below);
 }
 
+static int		determine_direction(t_runtime *rt, int v0, int v1)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = rt->stack_a.elem_count - 1;
+	while (i < j)
+	{
+		if (rt->stack_a.data[i] == v0 || rt->stack_a.data[i] == v1)
+			return (0);
+		if (rt->stack_a.data[j] == v0 || rt->stack_a.data[j] == v1)
+			return (1);
+		++i;
+		--j;
+	}
+	return (0);
+}
+
 static t_bool	pushvals(t_runtime *rt, int v0, int v1, int nmax)
 {
 	int		n;
 	int		v;
+	int		dir;
 
 	n = 0;
+	dir = determine_direction(rt, v0, v1);
 	while (n < nmax)
 	{
 		v = rt->stack_a.data[rt->stack_a.elem_count - 1];
@@ -48,10 +69,20 @@ static t_bool	pushvals(t_runtime *rt, int v0, int v1, int nmax)
 		{
 			if (!push_b())
 				return (FALSE);
+			determine_direction(rt, v0, v1);
 			++n;
 		}
-		else if (!rot_a())
-			return (FALSE);
+		else
+		{
+			if (dir == 0)
+			{
+				if (!rrot_a())
+					return (FALSE);
+			}
+			else
+				if (!rot_a())
+					return (FALSE);
+		}
 	}
 	return (TRUE);
 }

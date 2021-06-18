@@ -74,7 +74,7 @@ void	rt_exit(int code)
 
 	rt = rt_ptr();
 	lifo_dtor(&(rt->stack_a));
-	lifo_dtor(&(rt->stack_b));
+	// lifo_dtor(&(rt->stack_b));
 	arraylist_freeres(&(rt->ops));
 	if (code != 0)
 		write(STDERR_FILENO, "Error\n", 6);
