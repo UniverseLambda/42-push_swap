@@ -118,6 +118,7 @@ t_bool	handle_chunk(t_lifo_stack *sa, size_t chunk, size_t size)
 	return (TRUE);
 }
 
+#include <stdio.h>
 t_bool	chunk_sort(t_runtime *rt)
 {
 	t_lifo_stack	*sa;
@@ -128,19 +129,38 @@ t_bool	chunk_sort(t_runtime *rt)
 
 	sa = &(rt->stack_a);
 	curr = 0;
-	total = 5;
-	chunk_size = (sa->elem_count / total) + !!(sa->elem_count % total);
-	while (curr < chunk_size)
+	chunk_size = (sa->elem_count / 5) + !!(sa->elem_count % 5);
+	total = sa->elem_count / chunk_size + !!(sa->elem_count % chunk_size);
+	while (curr < total)
 	{
 		if (!handle_chunk(sa, curr, chunk_size))
 			return (FALSE);
 		++curr;
 	}
-	dir = nearest(&(rt->stack_b), rt->stack_b.elem_count - 1,
-		rt->stack_b.elem_count - 1);
-	while (lifo_at(&(rt->stack_b), 0) != (int)(rt->stack_b.elem_count - 1))
-		if ((dir == DIR_ROTATE && !rot_b()) || !rrot_b())
+	int biggest = (int)(rt->stack_b.elem_count - 1);
+	dir = nearest(&(rt->stack_b), biggest, biggest);
+
+	printf("Looking for %d...\n", biggest);
+	for (size_t i = 0; i < rt->stack_b.elem_count; ++i) {
+		printf("[%zu]: %d\n", i, rt->stack_b.data[i]);
+		if (rt->stack_b.data[i] == biggest) {
+			printf("FOUND!!!!\n");
+			break;
+		}
+	}
+
+	while (lifo_at(&(rt->stack_b), 0) != biggest)
+	{
+		if (dir == DIR_ROTATE)
+		{
+			if (!rot_b())
+			{
+				return (FALSE);
+			}
+		}
+		else if (!rrot_b())
 			return (FALSE);
+	}
 	while (rt->stack_b.elem_count > 0)
 		if (!push_a())
 			return (FALSE);

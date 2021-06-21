@@ -5,125 +5,96 @@
 #include <ops.h>
 #include <limits.h>
 
-static t_aref	abelow(t_runtime *rt, int pivot)
+enum	e_dir
 {
-	t_aref	below;
-	size_t	i;
-	size_t	aidx;
-	size_t	n;
+	DIR_NOT_FOUND,
+	DIR_ROTATE,
+	DIR_REVERSE
+};
+
+// min: inclusive; max: exclusive
+// Special case: when min == max, it will find the shortest way to min
+
+static enum e_dir	nearest(t_lifo_stack *s, t_aref below)
+{
+	size_t			i;
+	size_t			j;
+	size_t			k;
 
 	i = 0;
-	n = 0;
-	while (i < rt->stack_a.elem_count)
+	j = s->elem_count - 1;
+	if (!alen(below))
+		return (DIR_NOT_FOUND);
+	while (i < j || (alen(below) > 2 || i <= j))
 	{
-		if (rt->stack_a.data[i] < pivot)
-			++n;
-		++i;
-	}
-	below = anew(n);
-	i = 0;
-	aidx = 0;
-	if (avalid(below))
-	{
-		while (i < rt->stack_a.elem_count)
+		k = 0;
+		while (k < alen(below))
 		{
-			if (rt->stack_a.data[i] < pivot)
-				aput(below, aidx++, rt->stack_a.data[i]);
-			++i;
+			if (s->data[i] == aget(below, k))
+				return (DIR_REVERSE);
+			if (s->data[j] == aget(below, k))
+				return (DIR_ROTATE);
+			++k;
 		}
-	}
-	return (below);
-}
-
-static int		determine_direction(t_runtime *rt, int v0, int v1)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = rt->stack_a.elem_count - 1;
-	while (i < j)
-	{
-		if (rt->stack_a.data[i] == v0 || rt->stack_a.data[i] == v1)
-			return (0);
-		if (rt->stack_a.data[j] == v0 || rt->stack_a.data[j] == v1)
-			return (1);
 		++i;
 		--j;
 	}
-	return (0);
-}
-
-static t_bool	pushvals(t_runtime *rt, int v0, int v1, int nmax)
-{
-	int		n;
-	int		v;
-	int		dir;
-
-	n = 0;
-	dir = determine_direction(rt, v0, v1);
-	while (n < nmax)
-	{
-		v = rt->stack_a.data[rt->stack_a.elem_count - 1];
-		if (v == v0 || v == v1)
-		{
-			if (!push_b())
-				return (FALSE);
-			determine_direction(rt, v0, v1);
-			++n;
-		}
-		else
-		{
-			if (dir == 0)
-			{
-				if (!rrot_a())
-					return (FALSE);
-			}
-			else
-				if (!rot_a())
-					return (FALSE);
-		}
-	}
-	return (TRUE);
+	return (DIR_NOT_FOUND);
 }
 
 static t_bool	handle_atomic(t_runtime *rt, t_aref below)
 {
-	if (below.length <= 1)
-		return (pushvals(rt, below.ptr[0], below.ptr[0], 1));
-	if (!pushvals(rt, below.ptr[0], below.ptr[1], 2))
-		return (FALSE);
-	if (rt->stack_b.data[rt->stack_b.elem_count - 1] < rt->stack_b.data[rt->stack_b.elem_count - 2])
-		if (!swap_b())
+	enum e_dir	dir;
+	size_t		k;
+	size_t		it;
+	t_bool		found;
+	t_bool		ret;
+
+	it = 0;
+	while  (it++ < alen(below))
+	{
+		found = FALSE;
+		dir = nearest(&(rt->stack_a), below);
+		while (!found)
+		{
+			k = 0;
+			while (k < alen(below))
+			{
+				if (lifo_at(&(rt->stack_a), 0) == aget(below, k))
+				{
+					found = TRUE;
+					break;
+				}
+				++k;
+			}
+			if (!found)
+			{
+				if (dir == DIR_ROTATE)
+					ret = rot_a();
+				else
+					ret = rrot_a();
+				if (!ret)
+					return (FALSE);
+			}
+		}
+		if (!push_b())
 			return (FALSE);
+	}
 	return (TRUE);
 }
 
-static t_bool	_qs(t_runtime *rt, int pivot)
+static t_bool	_qs(t_runtime *rt)
 {
-	t_lifo_stack	*stack_a;
-	t_aref			below;
+	t_lifo_stack	*sa;
 	int				next_pivot;
 	t_bool			ret;
+	enum e_dir		dir;
 
-	stack_a = &(rt->stack_a);
-	below = abelow(rt, pivot);
-	if (!avalid(below))
-		return (FALSE);
-	if (below.length <= 2)
-	{
-		ret = handle_atomic(rt, below);
-		afree(below);
-		return (ret);
-	}
+	sa = &(rt->stack_a);
 	ret = FALSE;
-	if (median(below.ptr, below.length, below.length / 2, &next_pivot))
-	{
-		ret = _qs(rt, next_pivot);
-		if (ret)
-			ret = _qs(rt, pivot);
-	}
-	afree(below);
+	if (!median(sa->data, sa->elem_count, sa->elem_count / 2, &next_pivot))
+		return (FALSE);
+	
 	return (ret);
 }
 
@@ -140,7 +111,7 @@ t_bool	quick_sort(t_runtime *rt)
 			max = rt->stack_a.data[i];
 		++i;
 	}
-	if (!_qs(rt, max))
+	if (!_qs(rt))
 		return (FALSE);
 	while (rt->stack_b.elem_count > 0)
 		if (!push_a())

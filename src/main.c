@@ -83,11 +83,11 @@ int	main(int argc, char *argv[])
 	// 	printf("[%d]: %d\n", argc - 2 - i, rt_ptr()->stack_a.data[i]);
 	// }
 	// sort();
-	// if (!quick_sort(rt_ptr()))
-	// 	rt_exit(3);
-	// printf("%p\n", rt_ptr()->stack_b.data);
-	if (!chunk_sort(rt_ptr()))
+	if (!quick_sort(rt_ptr()))
 		rt_exit(3);
+	// printf("%p\n", rt_ptr()->stack_b.data);
+	// if (!chunk_sort(rt_ptr()))
+	// 	rt_exit(3);
 	// printf("%p\n", rt_ptr()->stack_b.data);
 	for (size_t i = 0; i < rt_ptr()->ops.elemcount; ++i)
 		print_op(((enum e_ops *)(rt_ptr()->ops.data))[i]);
