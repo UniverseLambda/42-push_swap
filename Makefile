@@ -27,6 +27,7 @@ OBJS := src/main.o \
 		src/ops_rotate.o \
 		src/ops_rrotate.o \
 		src/ops_target.o \
+		src/ops_ntarget.o \
 		src/quick_sort.o \
 		src/chunk_sort.o \
 

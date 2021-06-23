@@ -50,4 +50,9 @@ int		push_x(t_lifo_stack *stack);
 int		rot_x(t_lifo_stack *stack);
 int		rrot_x(t_lifo_stack *stack);
 
+int		swap_nx(t_lifo_stack *stack);
+int		push_nx(t_lifo_stack *stack);
+int		rot_nx(t_lifo_stack *stack);
+int		rrot_nx(t_lifo_stack *stack);
+
 #endif // OPS_H
