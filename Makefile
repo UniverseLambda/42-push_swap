@@ -30,6 +30,7 @@ OBJS := src/main.o \
 		src/ops_ntarget.o \
 		src/quick_sort.o \
 		src/chunk_sort.o \
+		src/san.o \
 
 all: all-dependency $(NAME)
 

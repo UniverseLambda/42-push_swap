@@ -12,18 +12,52 @@ enum	e_dir
 	DIR_REVERSE
 };
 
-static t_bool	_qs(t_runtime *rt, size_t n, t_bool preserve);
-
-#include <stdio.h>
-static size_t	below_count(t_lifo_stack *s, int pivot, size_t n)
+static size_t	above_count(t_lifo_stack *s, int pivot, size_t n)
 {
 	size_t	count;
 
 	count = 0;
 	while (n--)
-		if (lifo_at(s, n) < pivot)
+	if (lifo_at(s, n) >= pivot)
 			++count;
 	return (count);
+}
+
+#include <stdio.h>
+static t_bool	_median_b(t_lifo_stack *s, int pivot, size_t n, int *result)
+{
+	size_t	count;
+	t_aref	above;
+	size_t	i;
+	size_t	j;
+	int		ret;
+
+	i = n;
+	count = above_count(s, pivot, n);
+	if (count == 0)
+	{
+		puts("!");
+		return (TRUE);
+	}
+	above = anew(count);
+	if (!avalid(above))
+	{
+		puts("@");
+		return (FALSE);
+	}
+	i = n;
+	j = 0;
+	while (i--)
+		if (lifo_at(s, i) >= pivot)
+			if (!aput(above, j++, lifo_at(s, i)))
+			{
+				puts("#");
+				afree(above);
+				return (FALSE);
+			}
+	ret = median(above.ptr, above.length, (above.length / 2), result);
+	afree(above);
+	return (ret);
 }
 
 static t_bool	transfert_b(t_lifo_stack *s, int pivot, size_t n, size_t *count)
@@ -56,34 +90,58 @@ static t_bool	transfert_b(t_lifo_stack *s, int pivot, size_t n, size_t *count)
 	return (TRUE);
 }
 
-static t_bool	_qs_b(t_runtime *rt, size_t n)
+static t_bool	_qs_b(t_runtime *rt, size_t n, int pivot)
 {
 	t_lifo_stack	*sb;
-	int				pivot;
+	size_t			count;
 	size_t			ntrans;
-	size_t			below;
+	int				next_pivot;
 
 	sb = &(rt->stack_b);
-	below = below_count(sb, pivot, n);
 	if (n <= 2)
 	{
 		if (n == 2)
 			if (lifo_at(sb, 0) >= lifo_at(sb, 1))
 				if (!swap_b())
+				{
+					puts("A");
 					return (FALSE);
+				}
 		while (n--)
 			if (!push_b())
+			{
+				puts("B");
 				return (FALSE);
+			}
 		return (TRUE);
 	}
-	if (!median(sb->data + (sb->elem_count - n), n, n / 2, &pivot))
-		return (TRUE);
-	if (!transfert_b(sb, pivot, n, &ntrans))
+	if (!_median_b(sb, pivot, n, &next_pivot))
+	{
+		puts("C");
 		return (FALSE);
-	if (!_qs(rt, ntrans, TRUE))
+	}
+	count = above_count(sb, next_pivot, n);
+	if (count <= 2)
+	{
+		if (!transfert_b(sb, next_pivot, n, &ntrans))
+		{
+			puts("D");
+			return (FALSE);
+		}
+		if (ntrans > 1 && lifo_at(&(rt->stack_a), 0) > lifo_at(&(rt->stack_a), 1))
+			if (!swap_a())
+			{
+				puts("E");
+				return (FALSE);
+			}
+		n -= ntrans;
+		next_pivot = pivot;
+	}
+	if (!_qs_b(rt, n, next_pivot))
+	{
+		puts("F");
 		return (FALSE);
-	if (!_qs_b(rt, n - ntrans))
-		return (FALSE);
+	}
 	return (TRUE);
 }
 
@@ -93,9 +151,6 @@ static enum e_dir	nearest(t_lifo_stack *s, int pivot, size_t n)
 	size_t			j;
 
 	i = s->elem_count - n;
-	// printf("elem_count: %zu\n", s->elem_count);
-	// printf("n:          %zu\n", n);
-	// printf("i:          %zu\n", i);
 	j = s->elem_count - 1;
 	if (s->elem_count == 0)
 		return (DIR_NOT_FOUND);
@@ -182,22 +237,39 @@ static t_bool	_qs(t_runtime *rt, size_t n, t_bool preserve)
 	size_t			ntrans;
 
 	sa = &(rt->stack_a);
+	if (!median(sa->data + (sa->elem_count - n), n, n / 2, &pivot))
+		return (FALSE);
 	if (n <= 2)
 	{
 		if (n == 2 && lifo_at(sa, 0) < lifo_at(sa, 1))
 			if (!swap_a())
+			{
+				puts("0");
 				return (FALSE);
-		return (_qs_b(rt, (n % 2) + 1));
+			}
+		return (_qs_b(rt, (n % 2) + 1, pivot));
 	}
-	if (!median(sa->data + (sa->elem_count - n), n, n / 2, &pivot))
-		return (FALSE);
 	if (preserve && !ptransfert(sa, pivot, n, &ntrans))
+	{
+		puts("1");
 		return (FALSE);
+	}
 	else if (!preserve && !transfert(sa, pivot, n, &ntrans))
+	{
+		puts("2");
 		return (FALSE);
+	}
 	if (!_qs(rt, n - ntrans, preserve))
+	{
+		puts("3");
 		return (FALSE);
-	return (_qs_b(rt, ntrans));
+	}
+	if (!_qs_b(rt, ntrans, pivot))
+	{
+		puts("4");
+		return (FALSE);
+	}
+	return (TRUE);
 }
 
 t_bool	quick_sort(t_runtime *rt)
@@ -214,8 +286,6 @@ t_bool	quick_sort(t_runtime *rt)
 		++i;
 	}
 	if (!_qs(rt, rt->stack_a.elem_count, FALSE))
-		return (FALSE);
-	if (!_qs_b(rt, rt->stack_b.elem_count))
 		return (FALSE);
 	return (TRUE);
 }

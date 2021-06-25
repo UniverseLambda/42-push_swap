@@ -21,6 +21,7 @@ typedef struct s_lifo_stack
 	int			*data;
 	size_t		stack_size;
 	size_t		elem_count;
+	void		*data_backup_ptr;
 }				t_lifo_stack;
 
 int		lifo_ctor(t_lifo_stack *this, size_t size);
