@@ -63,10 +63,10 @@ t_bool	pushval(t_lifo_stack *sa, t_lifo_stack *sb)
 				return (FALSE);
 		return (push_b());
 	}
-	if (highest)
+	// if (highest)
 		mark = get_max(sb);
-	else
-		mark = get_min(sb);
+	// else
+		// mark = get_min(sb);
 	while (lifo_at(sb, 0) != mark)
 		if (!rot_b())
 			return (FALSE);
