@@ -14,13 +14,14 @@ static int	get_max(t_lifo_stack *s)
 	curr_max = INT_MIN;
 	while (i < s->elem_count)
 	{
-		tmp = lifo_at(s, i);
-		if (curr_max < tmp)
+		tmp = s->data[i];
+		if (tmp > curr_max)
 			curr_max = tmp;
 		++i;
 	}
 	return (curr_max);
 }
+
 static int	get_min(t_lifo_stack *s)
 {
 	size_t	i;
@@ -31,8 +32,8 @@ static int	get_min(t_lifo_stack *s)
 	curr_min = INT_MAX;
 	while (i < s->elem_count)
 	{
-		tmp = lifo_at(s, i);
-		if (curr_min > tmp)
+		tmp = s->data[i];
+		if (tmp < curr_min)
 			curr_min = tmp;
 		++i;
 	}
@@ -50,7 +51,7 @@ t_bool	pushval(t_lifo_stack *sa, t_lifo_stack *sb)
 	if (sb->elem_count <= 1)
 	{
 		if (sb->elem_count == 1 && lifo_at(sb, 0) > val)
-			return (rot_b() && push_b());
+			return (push_b() && rot_b());
 		return (push_b());
 	}
 	highest = (get_max(sb) < val);
@@ -77,13 +78,18 @@ t_bool	handle_chunk(t_lifo_stack *sa, t_lifo_stack *sb, size_t chunk, size_t siz
 	const int	min = chunk * size;
 	const int	max = (chunk + 1) * size;
 	int			i;
+	size_t		it;
 
 	i = min;
-	while (i < max && i < (int)(rt_ptr()->stack_a.elem_count))
+	it = 0;
+	while (i < max && it < rt_ptr()->stack_a.elem_count)
 	{
 		while (lifo_at(sa, 0) < min || lifo_at(sa, 0) >= max)
+		{
 			if (!rot_a())
 				return (FALSE);
+			++it;
+		}
 		if (!pushval(sa, sb))
 			return (FALSE);
 		++i;
@@ -101,8 +107,8 @@ t_bool	chunk_sort(t_runtime *rt)
 	s[0] = &(rt->stack_a);
 	s[1] = &(rt->stack_b);
 	curr = 0;
-	chunk_size = (s[0]->elem_count / 5) + !!(s[0]->elem_count % 5);
-	total = (s[0]->elem_count / chunk_size) + !!(s[0]->elem_count % chunk_size);
+	total = 5;
+	chunk_size = (s[0]->elem_count / total) + !!(s[0]->elem_count % total);
 	while (curr < total)
 	{
 		if (!handle_chunk(s[0], s[1], curr, chunk_size))

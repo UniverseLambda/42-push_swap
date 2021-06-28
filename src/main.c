@@ -31,7 +31,7 @@ static void	print_op(enum e_ops op)
 		write(STDOUT_FILENO, "rrb\n", 4);
 	else if (op == REV_ROT_AB)
 		write(STDOUT_FILENO, "rrr\n", 4);
-	
+
 }
 
 static t_bool	indexify()
@@ -49,10 +49,10 @@ static t_bool	indexify()
 	i = -1;
 	while (++i < sa->elem_count)
 	{
-		j = 0;
+		j = -1;
 		below = 0;
-		while (j < sa->elem_count)
-			below += sa->data[j++] < sa->data[i];
+		while (++j < sa->elem_count)
+			below += sa->data[j] < sa->data[i];
 		aput(tmp, i, below);
 	}
 	ft_memcpy(sa->data, tmp.ptr, alen(tmp) * sizeof(*(sa->data)));
@@ -64,7 +64,7 @@ static t_bool	indexify()
 int	main(int argc, char *argv[])
 {
 	enum e_rtinit_ret	ret;
-	
+
 	ret = rt_init_args(argc, argv);
 	if (ret == RTINIT_NOARG)
 		return (0);
