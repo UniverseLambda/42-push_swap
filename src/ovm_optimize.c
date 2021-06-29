@@ -30,7 +30,7 @@ static void	pack_ops(t_runtime *rt)
 	}
 }
 
-void	readjust_rotates(t_runtime *rt)
+void	readjust_rotates()
 {
 	t_ovm	vm;
 	size_t	n;
@@ -57,7 +57,6 @@ void	readjust_rotates(t_runtime *rt)
 		}
 		vm = ovm_until_nop(vm, ROT_B);
 	}
-	pack_ops(rt);
 }
 
 void	remove_useless()
@@ -74,28 +73,20 @@ void	remove_useless()
 	while (current.rip < current.ops->elemcount)
 	{
 		op = *(op_ptr(current.rip));
-		if (op != ROT_A && op != ROT_B && op != NOOP)
-		{
-			ra = 0;
-			rb = 0;
-			ovm_next(&current);
-			continue ;
-		}
-		ra += (op == ROT_A);
-		rb += (op == ROT_B);
+		ra = (ra * !(op != ROT_A && op != ROT_B && op != NOOP)) + (op == ROT_A);
+		rb = (rb * !(op != ROT_A && op != ROT_B && op != NOOP)) + (op == ROT_B);
 		if (ra >= current.sa.elem_count)
 		{
 			i = -1;
-			while (++i < current.sa.elem_count)
+			while (++i < current.sa.elem_count && (ra--))
 				op_ptr(current.rip - ra)[i] = NOOP;
 			ra -= current.sa.elem_count;
 		}
 		if (rb >= current.sb.elem_count)
 		{
 			i = -1;
-			while (++i < current.sb.elem_count)
+			while (++i < current.sb.elem_count && (rb--))
 				op_ptr(current.rip - rb)[i] = NOOP;
-			rb -= current.sb.elem_count;
 		}
 		ovm_next(&current);
 	}
@@ -105,11 +96,10 @@ t_bool	ovm_optimize()
 {
 	t_runtime	*rt;
 
-	// puts("OPTIIII");
 	rt = rt_ptr();
 	remove_useless();
 	pack_ops(rt);
-	readjust_rotates(rt);
+	readjust_rotates();
 	pack_ops(rt);
 	return (TRUE);
 }

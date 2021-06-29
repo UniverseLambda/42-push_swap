@@ -116,12 +116,12 @@ t_bool	handle_chunk(t_lifo_stack *sa, t_lifo_stack *sb, size_t chunk, size_t siz
 		dir = nearest(sa, min, max);
 		while (lifo_at(sa, 0) < min || lifo_at(sa, 0) >= max)
 		{
-			if (!rot_a())
+			// if (!rot_a())
+			// 	return (FALSE);
+			if (dir == DIR_ROTATE && !rot_a())
 				return (FALSE);
-			// if (dir == DIR_ROTATE && !rot_a())
-			// 	return (FALSE);
-			// if (dir == DIR_REVERSE && !rrot_a())
-			// 	return (FALSE);
+			if (dir == DIR_REVERSE && !rrot_a())
+				return (FALSE);
 			++it;
 		}
 		if (!pushval(sa, sb))
