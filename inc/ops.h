@@ -31,28 +31,29 @@ enum e_ops
 	REV_ROT_AB,
 };
 
-void	optimize_ops(void);
+void		optimize_ops(void);
+enum e_ops	*op_ptr(size_t i);
 
-int		swap_a(void);
-int		swap_b(void);
-int		swap_ab(void);
-int		push_a(void);
-int		push_b(void);
-int		rot_a(void);
-int		rot_b(void);
-int		rot_ab(void);
-int		rrot_a(void);
-int		rrot_b(void);
-int		rrot_ab(void);
+int			swap_a(void);
+int			swap_b(void);
+int			swap_ab(void);
+int			push_a(void);
+int			push_b(void);
+int			rot_a(void);
+int			rot_b(void);
+int			rot_ab(void);
+int			rrot_a(void);
+int			rrot_b(void);
+int			rrot_ab(void);
 
-int		swap_x(t_lifo_stack *stack);
-int		push_x(t_lifo_stack *stack);
-int		rot_x(t_lifo_stack *stack);
-int		rrot_x(t_lifo_stack *stack);
+int			swap_x(t_lifo_stack *stack);
+int			push_x(t_lifo_stack *stack);
+int			rot_x(t_lifo_stack *stack);
+int			rrot_x(t_lifo_stack *stack);
 
-int		swap_nx(t_lifo_stack *stack);
-int		push_nx(t_lifo_stack *stack);
-int		rot_nx(t_lifo_stack *stack);
-int		rrot_nx(t_lifo_stack *stack);
+int			swap_nx(t_lifo_stack *stack);
+int			push_nx(t_lifo_stack *stack);
+int			rot_nx(t_lifo_stack *stack);
+int			rrot_nx(t_lifo_stack *stack);
 
 #endif // OPS_H

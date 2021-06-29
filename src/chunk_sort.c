@@ -4,6 +4,39 @@
 #include <ops.h>
 #include <limits.h>
 
+
+enum	e_dir
+{
+	DIR_NOT_FOUND,
+	DIR_ROTATE,
+	DIR_REVERSE
+};
+
+// min: inclusive; max: exclusive
+
+static enum e_dir	nearest(t_lifo_stack *s, int min, int max)
+{
+	size_t			i;
+	size_t			j;
+
+	i = 0;
+	j = s->elem_count - 1;
+	if (s->elem_count == 0)
+		return (DIR_NOT_FOUND);
+	while (i < j)
+	{
+		if (min <= s->data[i] && s->data[i] < max)
+			return (DIR_REVERSE);
+		if (min <= s->data[j] && s->data[j] < max)
+			return (DIR_ROTATE);
+		++i;
+		--j;
+	}
+	if (min <= s->data[i] && s->data[i] < max)
+		return (DIR_ROTATE);
+	return (DIR_NOT_FOUND);
+}
+
 static int	get_max(t_lifo_stack *s)
 {
 	size_t	i;
@@ -43,8 +76,7 @@ static int	get_min(t_lifo_stack *s)
 t_bool	pushval(t_lifo_stack *sa, t_lifo_stack *sb)
 {
 	int			val;
-	t_bool		highest;
-	t_bool		lowest;
+	t_bool		higlow;
 	int			mark;
 
 	val = lifo_at(sa, 0);
@@ -54,19 +86,15 @@ t_bool	pushval(t_lifo_stack *sa, t_lifo_stack *sb)
 			return (push_b() && rot_b());
 		return (push_b());
 	}
-	highest = (get_max(sb) < val);
-	lowest = !highest && (get_min(sb) > val);
-	if (!highest && !lowest)
+	higlow = (get_max(sb) < val) || (get_min(sb) > val);
+	if (!higlow)
 	{
 		while (lifo_at(sb, 0) > val || sb->data[0] < val)
 			if (!rot_b())
 				return (FALSE);
 		return (push_b());
 	}
-	// if (highest)
-		mark = get_max(sb);
-	// else
-		// mark = get_min(sb);
+	mark = get_max(sb);
 	while (lifo_at(sb, 0) != mark)
 		if (!rot_b())
 			return (FALSE);
@@ -79,15 +107,21 @@ t_bool	handle_chunk(t_lifo_stack *sa, t_lifo_stack *sb, size_t chunk, size_t siz
 	const int	max = (chunk + 1) * size;
 	int			i;
 	size_t		it;
+	enum e_dir	dir;
 
 	i = min;
 	it = 0;
 	while (i < max && it < rt_ptr()->stack_a.elem_count)
 	{
+		dir = nearest(sa, min, max);
 		while (lifo_at(sa, 0) < min || lifo_at(sa, 0) >= max)
 		{
 			if (!rot_a())
 				return (FALSE);
+			// if (dir == DIR_ROTATE && !rot_a())
+			// 	return (FALSE);
+			// if (dir == DIR_REVERSE && !rrot_a())
+			// 	return (FALSE);
 			++it;
 		}
 		if (!pushval(sa, sb))

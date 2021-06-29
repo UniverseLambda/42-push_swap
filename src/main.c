@@ -4,6 +4,7 @@
 #include <sort.h>
 #include <array.h>
 #include <ft_string.h>
+#include <ovm.h>
 
 #include <unistd.h>
 
@@ -73,22 +74,15 @@ int	main(int argc, char *argv[])
 		write(STDERR_FILENO, "Error\n", 6);
 		rt_exit(1);
 	}
-	// printf("%p\n", rt_ptr()->stack_b.data);
 	if (!indexify())
 	{
 		write(STDERR_FILENO, "Error\n", 6);
 		rt_exit(2);
 	}
-	// for (int i = argc - 2; i >= 0; --i) {
-	// 	printf("[%d]: %d\n", argc - 2 - i, rt_ptr()->stack_a.data[i]);
-	// }
-	// sort();
-	// if (!quick_sort(rt_ptr()))
-	// 	rt_exit(3);
-	// printf("%p\n", rt_ptr()->stack_b.data);
 	if (!chunk_sort(rt_ptr()))
 		rt_exit(3);
-	// printf("%p\n", rt_ptr()->stack_b.data);
+	if (!ovm_optimize())
+		return (FALSE);
 	for (size_t i = 0; i < rt_ptr()->ops.elemcount; ++i)
 		print_op(((enum e_ops *)(rt_ptr()->ops.data))[i]);
 	rt_exit(0);

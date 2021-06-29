@@ -28,9 +28,12 @@ OBJS := src/main.o \
 		src/ops_rrotate.o \
 		src/ops_target.o \
 		src/ops_ntarget.o \
+		src/ops_utils.o \
 		src/quick_sort.o \
 		src/chunk_sort.o \
 		src/san.o \
+		src/ovm.o \
+		src/ovm_optimize.o \
 
 all: all-dependency $(NAME)
 
