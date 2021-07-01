@@ -47,21 +47,26 @@ static t_bool	indexify()
 	tmp = anew(sa->elem_count);
 	if (!avalid(tmp))
 		return (FALSE);
-	i = -1;
-	while (++i < sa->elem_count)
+	i = 0;
+	while (i < sa->elem_count)
 	{
-		j = -1;
+		j = 0;
 		below = 0;
-		while (++j < sa->elem_count)
-			below += sa->data[j] < sa->data[i];
+		while (j < sa->elem_count)
+		{
+			if (sa->data[j] < sa->data[i])
+				++below;
+			++j;
+		}
 		aput(tmp, i, below);
+		++i;
 	}
-	ft_memcpy(sa->data, tmp.ptr, alen(tmp) * sizeof(*(sa->data)));
+	ft_memcpy(sa->data, tmp.ptr, alen(tmp) * sizeof(int));
+
 	afree(tmp);
 	return (TRUE);
 }
 
-#include <stdio.h>
 int	main(int argc, char *argv[])
 {
 	enum e_rtinit_ret	ret;

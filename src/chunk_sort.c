@@ -14,25 +14,23 @@ enum	e_dir
 
 // min: inclusive; max: exclusive
 
-static enum e_dir	nearest(t_lifo_stack *s, int min, int max)
+static enum e_dir	nearest(t_lifo_stack *s, int max)
 {
-	size_t			i;
-	size_t			j;
+	size_t		i;
+	size_t		j;
 
 	i = 0;
 	j = s->elem_count - 1;
-	if (s->elem_count == 0)
-		return (DIR_NOT_FOUND);
 	while (i < j)
 	{
-		if (min <= s->data[i] && s->data[i] < max)
+		if (s->data[i] < max)
 			return (DIR_REVERSE);
-		if (min <= s->data[j] && s->data[j] < max)
+		if (s->data[j] < max)
 			return (DIR_ROTATE);
 		++i;
 		--j;
 	}
-	if (min <= s->data[i] && s->data[i] < max)
+	if (i < s->elem_count && s->data[i] < max)
 		return (DIR_ROTATE);
 	return (DIR_NOT_FOUND);
 }
@@ -101,23 +99,17 @@ t_bool	pushval(t_lifo_stack *sa, t_lifo_stack *sb)
 	return (push_b());
 }
 
-t_bool	handle_chunk(t_lifo_stack *sa, t_lifo_stack *sb, size_t chunk, size_t size)
+t_bool	handle_chunk(t_lifo_stack *sa, t_lifo_stack *sb, int max)
 {
-	const int	min = chunk * size;
-	const int	max = (chunk + 1) * size;
-	int			i;
 	size_t		it;
 	enum e_dir	dir;
 
-	i = min;
 	it = 0;
-	while (i < max && it < rt_ptr()->stack_a.elem_count)
+	dir = nearest(sa, max);
+	while (dir != DIR_NOT_FOUND && it < rt_ptr()->stack_a.elem_count)
 	{
-		dir = nearest(sa, min, max);
-		while (lifo_at(sa, 0) < min || lifo_at(sa, 0) >= max)
+		while (lifo_at(sa, 0) >= max)
 		{
-			// if (!rot_a())
-			// 	return (FALSE);
 			if (dir == DIR_ROTATE && !rot_a())
 				return (FALSE);
 			if (dir == DIR_REVERSE && !rrot_a())
@@ -126,7 +118,7 @@ t_bool	handle_chunk(t_lifo_stack *sa, t_lifo_stack *sb, size_t chunk, size_t siz
 		}
 		if (!pushval(sa, sb))
 			return (FALSE);
-		++i;
+		dir = nearest(sa, max);
 	}
 	return (TRUE);
 }
@@ -136,18 +128,20 @@ t_bool	chunk_sort(t_runtime *rt)
 	t_lifo_stack	*s[2];
 	size_t			curr;
 	size_t			total;
+	size_t			remaining;
 	size_t			chunk_size;
 
 	s[0] = &(rt->stack_a);
 	s[1] = &(rt->stack_b);
 	curr = 0;
-	total = 5;
-	chunk_size = (s[0]->elem_count / total) + !!(s[0]->elem_count % total);
+	total = 12;
+	chunk_size = (s[0]->elem_count / total);
+	remaining = (s[0]->elem_count % total);
 	while (curr < total)
 	{
-		if (!handle_chunk(s[0], s[1], curr, chunk_size))
-			return (FALSE);
 		++curr;
+		if (!handle_chunk(s[0], s[1], (curr * chunk_size) + remaining))
+			return (FALSE);
 	}
 	int biggest = get_max(s[1]);
 	while (lifo_at(s[1], 0) != biggest)

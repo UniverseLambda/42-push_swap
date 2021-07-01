@@ -92,6 +92,40 @@ void	remove_useless()
 	}
 }
 
+void	ovm_apply_merge(t_ovm vm, size_t acount, size_t bcount, enum e_ops expected)
+{
+
+}
+
+void	ovm_merge()
+{
+	t_ovm		vm;
+	size_t		acount;
+	size_t		bcount;
+	enum e_ops	op;
+	enum e_ops	expected;
+
+	vm = init_ovm();
+	acount = 0;
+	bcount = 0;
+	expected = NOOP;
+	while (vm.rip < vm.ops->elemcount)
+	{
+		op = (*op_ptr(vm.rip));
+		if (op == PUSH_A || op == PUSH_B)
+		{
+			if (acount != 0 && bcount != 0)
+			{
+
+			}
+			acount = 0;
+			bcount = 0;
+		}
+
+		ovm_next(&vm);
+	}
+}
+
 t_bool	ovm_optimize()
 {
 	t_runtime	*rt;
