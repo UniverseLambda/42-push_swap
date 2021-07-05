@@ -146,7 +146,7 @@ t_bool	chunk_sort(t_runtime *rt)
 	int biggest = get_max(s[1]);
 	while (lifo_at(s[1], 0) != biggest)
 	{
-		if (!rot_b())
+		if (!rrot_b())
 		{
 			return (FALSE);
 		}
