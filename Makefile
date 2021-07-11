@@ -34,6 +34,7 @@ OBJS := src/main.o \
 		src/san.o \
 		src/ovm.o \
 		src/ovm_optimize.o \
+		src/ovm_optimize_merge.o \
 
 all: all-dependency $(NAME)
 

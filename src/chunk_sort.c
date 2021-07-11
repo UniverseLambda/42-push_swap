@@ -134,7 +134,7 @@ t_bool	chunk_sort(t_runtime *rt)
 	s[0] = &(rt->stack_a);
 	s[1] = &(rt->stack_b);
 	curr = 0;
-	total = 12;
+	total = 15;
 	chunk_size = (s[0]->elem_count / total);
 	remaining = (s[0]->elem_count % total);
 	while (curr < total)

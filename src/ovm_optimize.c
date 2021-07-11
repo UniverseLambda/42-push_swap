@@ -6,24 +6,22 @@ static void	pack_ops(t_runtime *rt)
 {
 	size_t	i;
 	size_t	j;
-	size_t	n;
+	size_t	k;
 
 	i = 0;
 	while (i < rt->ops.elemcount)
 	{
-		if (*(op_ptr(i)) == NOOP)
+		if (*op_ptr(i) == NOOP)
 		{
-			n = 0;
-			while ((i + n) < rt->ops.elemcount && *(op_ptr(i + n)) == NOOP)
-				++n;
-			if (i + n >= rt->ops.elemcount)
-				break ;
-			j = 0;
-			while ((i + n + j) < rt->ops.elemcount)
-			{
-				op_ptr(i)[j] = op_ptr(i + n)[j];
-				op_ptr(i + n)[j] = NOOP;
+			j = i;
+			while (j < rt->ops.elemcount && *op_ptr(j) == NOOP)
 				++j;
+			k = 0;
+			while ((k + j) < rt->ops.elemcount)
+			{
+				op_ptr(i)[k] = op_ptr(j)[k];
+				op_ptr(j)[k] = NOOP;
+				++k;
 			}
 		}
 		++i;
@@ -40,7 +38,7 @@ void	readjust_rotates()
 	while (vm.rip < vm.ops->elemcount)
 	{
 		vm = ovm_until_op(vm, ROT_B);
-		n = 0;
+		n = 1;
 		while (vm.rip + n < vm.ops->elemcount && op_ptr(vm.rip)[n] == ROT_B)
 			++n;
 		if (n > vm.sb.elem_count - n)
@@ -92,48 +90,15 @@ void	remove_useless()
 	}
 }
 
-void	ovm_apply_merge(t_ovm vm, size_t acount, size_t bcount, enum e_ops expected)
-{
-
-}
-
-void	ovm_merge()
-{
-	t_ovm		vm;
-	size_t		acount;
-	size_t		bcount;
-	enum e_ops	op;
-	enum e_ops	expected;
-
-	vm = init_ovm();
-	acount = 0;
-	bcount = 0;
-	expected = NOOP;
-	while (vm.rip < vm.ops->elemcount)
-	{
-		op = (*op_ptr(vm.rip));
-		if (op == PUSH_A || op == PUSH_B)
-		{
-			if (acount != 0 && bcount != 0)
-			{
-
-			}
-			acount = 0;
-			bcount = 0;
-		}
-
-		ovm_next(&vm);
-	}
-}
-
 t_bool	ovm_optimize()
 {
 	t_runtime	*rt;
 
 	rt = rt_ptr();
-	remove_useless();
-	pack_ops(rt);
+	// remove_useless();
+	// pack_ops(rt);
 	readjust_rotates();
 	pack_ops(rt);
+	ovm_merge();
 	return (TRUE);
 }

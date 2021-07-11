@@ -45,5 +45,6 @@ t_ovm	ovm_until_index(t_ovm ovm, size_t opidx);
 void	ovm_next(t_ovm *ovm);
 
 t_bool	ovm_optimize();
+void	ovm_merge();
 
 #endif // OVM_H
