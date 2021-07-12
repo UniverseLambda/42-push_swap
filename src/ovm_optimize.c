@@ -28,7 +28,7 @@ static void	pack_ops(t_runtime *rt)
 	}
 }
 
-void	readjust_rotates()
+void	readjust_rotates(void)
 {
 	t_ovm	vm;
 	size_t	n;
@@ -57,46 +57,11 @@ void	readjust_rotates()
 	}
 }
 
-void	remove_useless()
-{
-	t_ovm		current;
-	size_t		ra;
-	size_t		rb;
-	size_t		i;
-	enum e_ops	op;
-
-	ra = 0;
-	rb = 0;
-	current = init_ovm();
-	while (current.rip < current.ops->elemcount)
-	{
-		op = *(op_ptr(current.rip));
-		ra = (ra * !(op != ROT_A && op != ROT_B && op != NOOP)) + (op == ROT_A);
-		rb = (rb * !(op != ROT_A && op != ROT_B && op != NOOP)) + (op == ROT_B);
-		if (ra >= current.sa.elem_count)
-		{
-			i = -1;
-			while (++i < current.sa.elem_count && (ra--))
-				op_ptr(current.rip - ra)[i] = NOOP;
-			ra -= current.sa.elem_count;
-		}
-		if (rb >= current.sb.elem_count)
-		{
-			i = -1;
-			while (++i < current.sb.elem_count && (rb--))
-				op_ptr(current.rip - rb)[i] = NOOP;
-		}
-		ovm_next(&current);
-	}
-}
-
-t_bool	ovm_optimize()
+t_bool	ovm_optimize(void)
 {
 	t_runtime	*rt;
 
 	rt = rt_ptr();
-	// remove_useless();
-	// pack_ops(rt);
 	readjust_rotates();
 	pack_ops(rt);
 	ovm_merge();

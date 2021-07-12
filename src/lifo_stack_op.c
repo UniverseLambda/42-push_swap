@@ -1,8 +1,7 @@
 #include <lifo_stack.h>
 
-#pragma message "REMOVE SAN"
-
 #include <san.h>
+
 void	lifo_swap(t_lifo_stack *this)
 {
 	int	tmp;

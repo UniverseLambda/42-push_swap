@@ -34,6 +34,6 @@ size_t			alen(t_aref ref);
 t_aref			awrap(int *ptr, size_t len);
 t_aref			asharedsub(t_aref ref, size_t start, size_t end);
 t_aref			asub(t_aref ref, size_t start, size_t end);
-t_aref			ainvalid();
+t_aref			ainvalid(void);
 
 #endif // ARRAY_H

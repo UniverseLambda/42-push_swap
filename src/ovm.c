@@ -43,7 +43,7 @@ t_ovm	ovm_until_nop(t_ovm ovm, enum e_ops op)
 	return (ovm);
 }
 
-t_ovm	init_ovm()
+t_ovm	init_ovm(void)
 {
 	t_runtime	*rt;
 	t_ovm		ovm;

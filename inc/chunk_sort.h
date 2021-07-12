@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   san.h                                              :+:      :+:    :+:   */
+/*   chunk_sort.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clsaad <clsaad@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/29 10:11:46 by clsaad            #+#    #+#             */
-/*   Updated: 2021/06/29 10:11:47 by clsaad           ###   ########lyon.fr   */
+/*   Created: 2021/07/12 14:26:45 by clsaad            #+#    #+#             */
+/*   Updated: 2021/07/12 14:26:45 by clsaad           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SAN_H
-# define SAN_H
+#ifndef CHUNK_SORT_H
+# define CHUNK_SORT_H
 
-void	lifo_error_break(void);
+# include<lifo_stack.h>
 
-#endif // SAN_H
+enum	e_dir
+{
+	DIR_NOT_FOUND,
+	DIR_ROTATE,
+	DIR_REVERSE
+};
+
+enum e_dir	cs_nearest(t_lifo_stack *s, int max);
+int			cs_get_min(t_lifo_stack *s);
+int			cs_get_max(t_lifo_stack *s);
+
+#endif // CHUNK_SORT_H

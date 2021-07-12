@@ -11,7 +11,8 @@ typedef struct s_frame
 	enum e_ops	expected;
 }				t_frame;
 
-void	ovm_apply_merge(size_t start, size_t count_a, size_t count_b, enum e_ops replacement)
+void	ovm_apply_merge(size_t start, size_t count_a, size_t count_b,
+	enum e_ops replacement)
 {
 	size_t	i;
 
@@ -29,33 +30,6 @@ void	ovm_apply_merge(size_t start, size_t count_a, size_t count_b, enum e_ops re
 		++i;
 	}
 }
-
-// static const char *str(enum e_ops op)
-// {
-// 	if (op == SWAP_A)
-// 		return "sa";
-// 	else if (op == SWAP_B)
-// 		return "sb";
-// 	else if (op == SWAP_AB)
-// 		return "ss";
-// 	else if (op == PUSH_A)
-// 		return "pa";
-// 	else if (op == PUSH_B)
-// 		return "pb";
-// 	else if (op == ROT_A)
-// 		return "ra";
-// 	else if (op == ROT_B)
-// 		return "rb";
-// 	else if (op == ROT_AB)
-// 		return "rr";
-// 	else if (op == REV_ROT_A)
-// 		return "rra";
-// 	else if (op == REV_ROT_B)
-// 		return "rrb";
-// 	else if (op == REV_ROT_AB)
-// 		return "rrr";
-// 	return "noop";
-// }
 
 static t_bool	next_frame(t_ovm *vm, t_frame *frame)
 {
@@ -92,7 +66,8 @@ static t_bool	get_count(t_ovm *vm, t_frame *frame)
 		frame->size += 1;
 		ovm_next(vm);
 	}
-	if ((frame->count_a == 0 || frame->count_b == 0) && vm->rip >= vm->ops->elemcount)
+	if ((frame->count_a == 0 || frame->count_b == 0)
+		&& vm->rip >= vm->ops->elemcount)
 		return (FALSE);
 	return (TRUE);
 }
@@ -126,7 +101,7 @@ static void	apply_merge(t_frame *frame)
 	}
 }
 
-void	ovm_merge()
+void	ovm_merge(void)
 {
 	t_ovm		vm;
 	t_frame		frame;

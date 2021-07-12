@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   san.h                                              :+:      :+:    :+:   */
+/*   checks.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clsaad <clsaad@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/29 10:11:46 by clsaad            #+#    #+#             */
-/*   Updated: 2021/06/29 10:11:47 by clsaad           ###   ########lyon.fr   */
+/*   Created: 2021/07/12 11:50:20 by clsaad            #+#    #+#             */
+/*   Updated: 2021/07/12 11:50:21 by clsaad           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SAN_H
-# define SAN_H
+#ifndef CHECKS_H
+# define CHECKS_H
 
-void	lifo_error_break(void);
+# include "ps_runtime.h"
+# include "ft_stdbool.h"
 
-#endif // SAN_H
+t_bool	check_are_uniques(t_runtime *rt);
+t_bool	check_are_sorted(t_runtime *rt);
+
+#endif // CHECKS_H

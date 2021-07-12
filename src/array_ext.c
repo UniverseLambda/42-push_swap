@@ -21,7 +21,7 @@ size_t	alen(t_aref ref)
 t_aref	asharedsub(t_aref ref, size_t start, size_t end)
 {
 	t_aref	res;
-	
+
 	if (!avalid(ref))
 		return (ainvalid());
 	if (end < start)
@@ -48,7 +48,7 @@ t_aref	asub(t_aref ref, size_t start, size_t end)
 	return (res);
 }
 
-t_aref	ainvalid()
+t_aref	ainvalid(void)
 {
 	t_aref	res;
 

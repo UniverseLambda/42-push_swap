@@ -8,6 +8,18 @@ CC ?= clang
 RM ?= rm
 LD := $(CC)
 
+INC := inc/array.h \
+		inc/checks.h \
+		inc/chunk_sort.h \
+		inc/lifo_stack.h \
+		inc/median.h \
+		inc/ops.h \
+		inc/ovm.h \
+		inc/ps_runtime.h \
+		inc/san.h \
+		inc/sort.h \
+
+
 CFLAGS ?=
 CFLAGS := $(CFLAGS) -Wall -Wextra -Werror -Iinc -Ilibft/inc -g3 -fsanitize=address
 LDFLAGS := $(LDFLAGS) -g3 -fsanitize=address
@@ -15,6 +27,7 @@ LDFLAGS := $(LDFLAGS) -g3 -fsanitize=address
 BUILD_TYPE := release
 
 OBJS := src/main.o \
+		src/checks.o \
 		src/new_median.o \
 		src/new_median_ext.o \
 		src/array.o \
@@ -22,14 +35,13 @@ OBJS := src/main.o \
 		src/lifo_stack.o \
 		src/lifo_stack_op.o \
 		src/ps_runtime.o \
-		src/sort.o \
 		src/ops_push_swap.o \
 		src/ops_rotate.o \
 		src/ops_rrotate.o \
 		src/ops_target.o \
 		src/ops_ntarget.o \
 		src/ops_utils.o \
-		src/quick_sort.o \
+		src/chunk_sort2.o \
 		src/chunk_sort.o \
 		src/san.o \
 		src/ovm.o \
@@ -41,7 +53,7 @@ all: all-dependency $(NAME)
 $(NAME): dependency $(OBJS)
 	$(LD) $(LDFLAGS) -o $(NAME) $(OBJS) libft/libft.a
 
-%.o: %.c libft.h
+%.o: %.c $(INC)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean: clean-dependency

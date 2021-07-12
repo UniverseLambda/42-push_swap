@@ -38,13 +38,13 @@ typedef struct s_ovm_frame
 	size_t		size;
 }				t_ovm_frame;
 
-t_ovm	init_ovm();
+t_ovm	init_ovm(void);
 t_ovm	ovm_until_nop(t_ovm ovm, enum e_ops op);
 t_ovm	ovm_until_op(t_ovm ovm, enum e_ops op);
 t_ovm	ovm_until_index(t_ovm ovm, size_t opidx);
 void	ovm_next(t_ovm *ovm);
 
-t_bool	ovm_optimize();
-void	ovm_merge();
+t_bool	ovm_optimize(void);
+void	ovm_merge(void);
 
 #endif // OVM_H

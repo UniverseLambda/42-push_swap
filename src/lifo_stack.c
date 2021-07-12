@@ -6,9 +6,7 @@
 #include <ft_string.h>
 
 #include <san.h>
-#pragma message "REMOVE SAN"
 
-#include <stdio.h>
 int	lifo_ctor(t_lifo_stack *this, size_t size)
 {
 	this->data = ft_calloc(sizeof(*(this->data)), size);
