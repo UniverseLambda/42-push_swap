@@ -62,8 +62,23 @@ static t_bool	indexify()
 		++i;
 	}
 	ft_memcpy(sa->data, tmp.ptr, alen(tmp) * sizeof(int));
-
 	afree(tmp);
+	return (TRUE);
+}
+
+t_bool	is_sorted(t_runtime *rt)
+{
+	t_lifo_stack	*sa;
+	size_t			i;
+
+	i = 1;
+	sa = &(rt->stack_a);
+	while (i < sa->elem_count)
+	{
+		if (sa->data[i - 1] <= sa->data[i])
+			return (FALSE);
+		++i;
+	}
 	return (TRUE);
 }
 
@@ -84,6 +99,8 @@ int	main(int argc, char *argv[])
 		write(STDERR_FILENO, "Error\n", 6);
 		rt_exit(2);
 	}
+	if (is_sorted(rt_ptr()))
+		rt_exit(0);
 	if (!chunk_sort(rt_ptr()))
 		rt_exit(3);
 	if (!ovm_optimize())

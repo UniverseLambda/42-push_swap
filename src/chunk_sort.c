@@ -14,6 +14,23 @@ enum	e_dir
 
 // min: inclusive; max: exclusive
 
+static size_t		get_group_count(size_t total)
+{
+	if (total >= 400)
+		return (15);
+	if (total >= 350)
+		return (12);
+	if (total >= 300)
+		return (10);
+	if (total >= 200)
+		return (8);
+	if (total >= 100)
+		return (5);
+	if (total >= 25)
+		return (2);
+	return (1);
+}
+
 static enum e_dir	nearest(t_lifo_stack *s, int max)
 {
 	size_t		i;
@@ -134,23 +151,16 @@ t_bool	chunk_sort(t_runtime *rt)
 	s[0] = &(rt->stack_a);
 	s[1] = &(rt->stack_b);
 	curr = 0;
-	total = 15;
+	total = get_group_count(s[0]->elem_count);
 	chunk_size = (s[0]->elem_count / total);
 	remaining = (s[0]->elem_count % total);
-	while (curr < total)
-	{
-		++curr;
+	while (curr++ < total)
 		if (!handle_chunk(s[0], s[1], (curr * chunk_size) + remaining))
 			return (FALSE);
-	}
 	int biggest = get_max(s[1]);
 	while (lifo_at(s[1], 0) != biggest)
-	{
 		if (!rrot_b())
-		{
 			return (FALSE);
-		}
-	}
 	while (s[1]->elem_count > 0)
 		if (!push_a())
 			return (FALSE);
