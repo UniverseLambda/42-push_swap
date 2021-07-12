@@ -16,16 +16,6 @@
 #include <ft_stdlib.h>
 #include <ft_ctype.h>
 
-static int	ft_isspace(int c)
-{
-	return (c == '\f'
-		|| c == '\n'
-		|| c == '\r'
-		|| c == '\t'
-		|| c == '\v'
-		|| c == ' ');
-}
-
 static int	subsatoi(unsigned int *val, int index, const char *nptr)
 {
 	if (!ft_isdigit(nptr[index]))
@@ -40,6 +30,20 @@ static int	subsatoi(unsigned int *val, int index, const char *nptr)
 	return (1);
 }
 
+static int	check_chars(const char *nptr)
+{
+	size_t	i;
+
+	i = (*nptr == '+' || *nptr == '-');
+	while (nptr[i])
+	{
+		if (nptr[i] < '0' || nptr[i] > '9')
+			return (0);
+		++i;
+	}
+	return (1);
+}
+
 int	ft_safe_atoi(int *ret, const char *nptr)
 {
 	int					result;
@@ -49,8 +53,8 @@ int	ft_safe_atoi(int *ret, const char *nptr)
 
 	val = 0;
 	index = 0;
-	while (ft_isspace(nptr[index]))
-		++index;
+	if (!check_chars(nptr))
+		return (0);
 	sign = nptr[index] == '-';
 	if (nptr[index] == '+' || nptr[index] == '-')
 		++index;

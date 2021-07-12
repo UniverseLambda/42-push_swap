@@ -24,6 +24,8 @@ void	lifo_dtor(t_lifo_stack *this)
 		lifo_error_break();
 	if (this->data != NULL)
 		free(this->data);
+	this->data = NULL;
+	this->data_backup_ptr = NULL;
 	this->stack_size = 0;
 	this->elem_count = 0;
 }
