@@ -9,23 +9,30 @@ typedef enum e_dir
 	REVERSE
 }	t_dir;
 
-static t_dir	nearest_min(t_lifo_stack *sa, int *min)
+static t_dir	nearest_next_min(t_lifo_stack *sa, int *min, int max)
 {
-	size_t	idx;
-	size_t	min_idx;
+	size_t	i;
+	size_t	j;
 
-	idx = 1;
-	min_idx = 0;
-	while (idx < sa->elem_count)
+	i = 0;
+	j = sa->elem_count - 1;
+	while (i < j)
 	{
-		if (lifo_at(sa, idx) < lifo_at(sa, min_idx))
-			min_idx = idx;
-		++idx;
+		if (lifo_at(sa, i) < max)
+			break ;
+		if (lifo_at(sa, j) < max)
+			break ;
+		++i;
+		--j;
+	}
+	if (lifo_at(sa, i) < max)
+	{
+		if (min != NULL)
+			*min = lifo_at(sa, i);
+		return (ROTATE);
 	}
 	if (min != NULL)
-		*min = lifo_at(sa, min_idx);
-	if (sa->elem_count - min_idx >= min_idx)
-		return (ROTATE);
+		*min = lifo_at(sa, j);
 	return (REVERSE);
 }
 
@@ -46,16 +53,12 @@ static void	duo_sort(t_lifo_stack *s, t_bool reverse)
 static void	tri_sort(t_runtime *rt, t_lifo_stack *sa)
 {
 	int		v[3];
-	int		s[3];
 
 	v[(sa->data[0] > sa->data[1]) + (sa->data[0] > sa->data[2])] = sa->data[0];
 	v[(sa->data[1] > sa->data[0]) + (sa->data[1] > sa->data[2])] = sa->data[1];
 	v[(sa->data[2] > sa->data[0]) + (sa->data[2] > sa->data[1])] = sa->data[2];
 	while (!check_is_sorted(rt))
 	{
-		s[0] = lifo_at(sa, 0);
-		s[1] = lifo_at(sa, 1);
-		s[2] = lifo_at(sa, 2);
 		if (lifo_at(sa, 0) == v[2])
 			rot_a();
 		else if (lifo_at(sa, 2) == v[0] || lifo_at(sa, 2) == v[1])
@@ -77,15 +80,16 @@ static void	large_sort(t_runtime *rt, t_lifo_stack *sa, t_lifo_stack *sb)
 
 	i = 0;
 	to = sa->elem_count - 3;
-	while (i++ < to)
+	while (i < to)
 	{
-		dir = nearest_min(sa, &min);
+		dir = nearest_next_min(sa, &min, to - i);
 		while (lifo_at(sa, 0) != min)
 			if (dir == ROTATE)
 				rot_a();
 			else
 				rrot_a();
 		push_b();
+		i++;
 	}
 	if (to != 1)
 		duo_sort(sb, TRUE);
