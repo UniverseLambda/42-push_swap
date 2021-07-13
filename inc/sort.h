@@ -19,5 +19,6 @@
 void	sort(void);
 t_bool	quick_sort(t_runtime *rt);
 t_bool	chunk_sort(t_runtime *rt);
+void	lazy_sort(t_runtime *rt);
 
 #endif // SORT_H

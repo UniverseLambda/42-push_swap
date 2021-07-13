@@ -88,14 +88,17 @@ int	main(int argc, char *argv[])
 		rt_exit(2);
 	if (!check_are_uniques(rt_ptr()))
 		rt_exit(3);
-	if (check_are_sorted(rt_ptr()))
+	if (check_is_sorted(rt_ptr()))
 		rt_exit(0);
-	if (!chunk_sort(rt_ptr()))
-		rt_exit(4);
+	if ((argc - 1) <= 5)
+		lazy_sort(rt_ptr());
+	else
+		if (!chunk_sort(rt_ptr()))
+			rt_exit(4);
 	if (!ovm_optimize())
 		rt_exit(5);
-	if (!check_are_sorted(rt_ptr()))
-		return (6);
+	if (!check_is_sorted(rt_ptr()))
+		rt_exit(6);
 	print_ops(rt_ptr());
 	rt_exit(0);
 }

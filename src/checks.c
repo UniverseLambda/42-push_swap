@@ -1,6 +1,6 @@
 #include <checks.h>
 
-t_bool	check_are_sorted(t_runtime *rt)
+t_bool	check_is_sorted(t_runtime *rt)
 {
 	t_lifo_stack	*sa;
 	size_t			i;

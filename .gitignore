@@ -5,3 +5,4 @@ push_swap
 *.java
 *.class
 checker_*
+*.old

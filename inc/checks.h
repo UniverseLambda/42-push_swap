@@ -17,6 +17,6 @@
 # include "ft_stdbool.h"
 
 t_bool	check_are_uniques(t_runtime *rt);
-t_bool	check_are_sorted(t_runtime *rt);
+t_bool	check_is_sorted(t_runtime *rt);
 
 #endif // CHECKS_H
