@@ -9,6 +9,7 @@ typedef enum e_dir
 	REVERSE
 }	t_dir;
 
+#include <stdio.h>
 static t_dir	nearest_next_min(t_lifo_stack *sa, int *min, int max)
 {
 	size_t	i;
@@ -25,6 +26,8 @@ static t_dir	nearest_next_min(t_lifo_stack *sa, int *min, int max)
 		++i;
 		--j;
 	}
+	if (lifo_at(sa, i) >= max && lifo_at(sa, j) >= max)
+		printf("WAIT THAT'S BAD\n");
 	if (lifo_at(sa, i) < max)
 	{
 		if (min != NULL)
@@ -82,7 +85,7 @@ static void	large_sort(t_runtime *rt, t_lifo_stack *sa, t_lifo_stack *sb)
 	to = sa->elem_count - 3;
 	while (i < to)
 	{
-		dir = nearest_next_min(sa, &min, to - i);
+		dir = nearest_next_min(sa, &min, to);
 		while (lifo_at(sa, 0) != min)
 			if (dir == ROTATE)
 				rot_a();
@@ -94,7 +97,7 @@ static void	large_sort(t_runtime *rt, t_lifo_stack *sa, t_lifo_stack *sb)
 	if (to != 1)
 		duo_sort(sb, TRUE);
 	tri_sort(rt, sa);
-	while (--i)
+	while (i--)
 		push_a();
 }
 
