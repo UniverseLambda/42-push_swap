@@ -9,7 +9,6 @@ typedef enum e_dir
 	REVERSE
 }	t_dir;
 
-#include <stdio.h>
 static t_dir	nearest_next_min(t_lifo_stack *sa, int *min, int max)
 {
 	size_t	i;
@@ -26,8 +25,6 @@ static t_dir	nearest_next_min(t_lifo_stack *sa, int *min, int max)
 		++i;
 		--j;
 	}
-	if (lifo_at(sa, i) >= max && lifo_at(sa, j) >= max)
-		printf("WAIT THAT'S BAD\n");
 	if (lifo_at(sa, i) < max)
 	{
 		if (min != NULL)
