@@ -1,5 +1,5 @@
 .DEFAULT: all
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re _name
 .SUFFIXES: .c .o
 
 NAME := push_swap
@@ -24,7 +24,15 @@ CFLAGS ?=
 CFLAGS := $(CFLAGS) -Wall -Wextra -Werror -Iinc -Ilibft/inc # -g3 # -fsanitize=address
 LDFLAGS := $(LDFLAGS) # -g3 # -fsanitize=address
 
+LIBFT := libft/libft.a
+
 BUILD_TYPE := release
+
+include libft/src/Makefile
+include libft/inc/Makefile
+
+LIBFT_SRCS := $(addprefix libft/, $(LIBFT_SRCS))
+LIBFT_INCLUDES := $(addprefix libft/, $(LIBFT_INCLUDES))
 
 OBJS := src/main.o \
 		src/checks.o \
@@ -49,12 +57,15 @@ OBJS := src/main.o \
 		src/ovm_optimize.o \
 		src/ovm_optimize_merge.o \
 
-all: all-dependency $(NAME)
+all: $(NAME) $(LIBFT) $(OBJS) $(LIBFT_SRCS) $(LIBFT_INCLUDES)
 
-$(NAME): dependency $(OBJS)
-	$(LD) $(LDFLAGS) -o $(NAME) $(OBJS) libft/libft.a
+$(NAME): $(LIBFT) $(OBJS) $(LIBFT_SRCS) $(LIBFT_INCLUDES)
+	make -C libft/ all
+	$(LD) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
 
-%.o: %.c $(INC)
+__name: $(LIBFT) $(OBJS)
+
+%.o: %.c $(INC) $(LIBFT_SRCS) $(LIBFT_INCLUDES)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean: clean-dependency
@@ -74,9 +85,7 @@ run:	all
 
 # DEPENDENCIES TARGET
 
-dependency: all-dependency
-
-all-dependency:
+$(LIBFT):
 	make -C libft/ all
 
 clean-dependency:
