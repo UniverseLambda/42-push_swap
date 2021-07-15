@@ -77,9 +77,8 @@ static void	print_ops(t_runtime *rt)
 
 int	main(int argc, char *argv[])
 {
-	enum e_rtinit_ret	ret;
+	const enum e_rtinit_ret	ret = rt_init_args(argc, argv);
 
-	ret = rt_init_args(argc, argv);
 	if (ret == RTINIT_NOARG)
 		return (0);
 	if (ret != RTINIT_OK)
@@ -99,8 +98,8 @@ int	main(int argc, char *argv[])
 		if (!ovm_optimize())
 			rt_exit(5);
 	}
-	// if (!check_is_sorted(rt_ptr()))
-	// 	rt_exit(6);
+	if (!check_is_sorted(rt_ptr()))
+		rt_exit(6);
 	print_ops(rt_ptr());
 	rt_exit(0);
 }

@@ -21,8 +21,8 @@ INC := inc/array.h \
 
 
 CFLAGS ?=
-CFLAGS := $(CFLAGS) -Wall -Wextra -Werror -Iinc -Ilibft/inc -g3 -fsanitize=address
-LDFLAGS := $(LDFLAGS) -g3 -fsanitize=address
+CFLAGS := $(CFLAGS) -Wall -Wextra -Werror -Iinc -Ilibft/inc # -g3 # -fsanitize=address
+LDFLAGS := $(LDFLAGS) # -g3 # -fsanitize=address
 
 BUILD_TYPE := release
 

@@ -86,8 +86,8 @@ static void	large_sort(t_runtime *rt, t_lifo_stack *sa, t_lifo_stack *sb)
 		while (lifo_at(sa, 0) != min)
 			if (dir == ROTATE)
 				rot_a();
-			else
-				rrot_a();
+		else
+			rrot_a();
 		push_b();
 		i++;
 	}

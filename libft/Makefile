@@ -10,7 +10,8 @@ AR ?= ar
 CFLAGS ?=
 CFLAGS := $(CFLAGS) -g -Wall -Wextra -Werror -Iinc # -fsanitize=address
 
-INCLUDES :=	inc/ft_ctype.h \
+INCLUDES :=	inc/ft_arraylist.h \
+			inc/ft_ctype.h \
 			inc/ft_list.h \
 			inc/ft_norm.h \
 			inc/ft_parser.h \
