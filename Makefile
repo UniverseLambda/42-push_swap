@@ -1,5 +1,5 @@
 .DEFAULT: all
-.PHONY: all clean fclean re _name
+.PHONY: all clean fclean re clean-dependency fclean-dependency
 .SUFFIXES: .c .o
 
 NAME := push_swap
@@ -63,15 +63,14 @@ $(NAME): $(LIBFT) $(OBJS) $(LIBFT_SRCS) $(LIBFT_INCLUDES)
 	make -C libft/ all
 	$(LD) $(LDFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
 
-__name: $(LIBFT) $(OBJS)
-
 %.o: %.c $(INC) $(LIBFT_SRCS) $(LIBFT_INCLUDES)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean: clean-dependency
 	$(RM) -f $(OBJS)
 
-fclean: fclean-dependency clean
+fclean: fclean-dependency
+	$(RM) -f $(OBJS)
 	$(RM) -f $(NAME)
 
 re: fclean all
@@ -93,6 +92,3 @@ clean-dependency:
 
 fclean-dependency:
 	make -C libft/ fclean
-
-re-dependency:
-	make -C libft/ re
